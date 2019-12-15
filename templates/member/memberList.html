@@ -1,0 +1,92 @@
+{% extends "board/base.html" %}
+
+{% block title %}
+회원목록
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-top-border">
+        <h3 class="mb-30">회원목록</h3>
+        <table class="table table-hover table_text_center">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">아이디</th>
+                    <th scope="col">이름</th>
+                    <th scope="col">연락처</th>
+                    <th scope="col">이메일</th>
+                    <th scope="col">가입일</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for tmp in posts %}
+                <tr>
+                    <th scope="row">{{tmp.mem_id}}</th>
+                    <td>{{tmp.mem_name}}</td>
+                    <td>{{tmp.mem_tel}}</td>
+                    <td>{{tmp.mem_email}}</td>
+                    <td>{{tmp.mem_date | date:"Y-m-d"}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if posts.0 is None %}
+            <div class="row justify-content-center">
+                <p>회원 목록이 존재하지 않습니다. 가입해주세요..ㅜㅜ</p>
+            </div>
+        {% endif %}
+    
+        <nav class="blog-pagination justify-content-center d-flex">
+            <ul class="pagination">
+                {% if posts.has_previous %}
+                    <li class="page-item">
+                        <a href="?page=1&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">
+                                첫페이지
+                                <!-- <span class="lnr lnr-chevron-left"></span> -->
+                            </span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a href="?page={{posts.previous_page_number}}&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">
+                                이전페이지
+                                <!-- <span class="lnr lnr-chevron-left"></span> -->
+                            </span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if posts.0 is not None %}
+                    <li class="page-item"><a href="#" class="page-link">{{posts.number}}</a></li>
+                    <li class="page-item"><a href="#" class="page-link">/</a></li>
+                    <li class="page-item"><a href="#" class="page-link">{{posts.paginator.num_pages}}</a></li>
+                {% endif %}
+                {% if posts.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{posts.next_page_number}}&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Next">
+                            <span aria-hidden="true">
+                                다음페이지
+                                <!-- <span class="lnr lnr-chevron-right"></span> -->
+                            </span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a href="?page={{posts.paginator.num_pages}}&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Next">
+                            <span aria-hidden="true">
+                                마지막페이지
+                                <!-- <span class="lnr lnr-chevron-right"></span> -->
+                            </span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    
+        <div class="row justify-content-end">
+            <div style="margin-right: 15px;">
+                <button class="genric-btn primary radius" onclick="location.href='/index'">홈으로</button>
+            </div>
+        </div>
+    </div>
+</div>        
+{% endblock %}

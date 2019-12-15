@@ -1,0 +1,101 @@
+{% extends "board/base.html" %}
+
+{% block title %}
+비밀번호번경
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-top-border">
+        <h3 class="mb-30">비밀번호변경</h3>
+        <div class="col-sm-6 col-md-offset-3">
+            <div class="form-group">
+                <label>기존 비밀번호</label>
+                <input type="password" id="pw" class="form-control" placeholder="기존 비밀번호를 입력해주세요">
+            </div>
+            <div class="form-group">
+                <label>새 비밀번호</label>
+                <input type="password" id="re_pw" class="form-control" placeholder="새로운 비밀번호를 입력해주세요">
+            </div>
+            <div class="form-group">
+                <label>새 비밀번호 확인</label>
+                <input type="password" id="re_pw2" class="form-control" placeholder="비밀번호를 다시한번 입력해 주세요">
+            </div>
+            <div class="form-group text-right">
+                <button class="genric-btn primary radius" id="btn_update">변경</button>
+                <button class="genric-btn primary radius" onclick="history.go(-1)">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    $(function() {
+        $('#btn_update').click(function() {
+            var pw = $('#pw').val()
+            var re_pw = $('#re_pw').val()
+            var re_pw2 = $('#re_pw2').val()
+
+            // 비밀번호 변경 유효성 검사
+            if(pw.length <= 0) {
+                alert('기존 비밀번호를 입력하세요.')
+                $('#pw').focus()
+                return false;
+            }
+
+            if (re_pw.length <= 0) {
+                alert('변경할 비밀번호를 입력하세요.')
+                $('#re_pw').focus()
+                return false;
+            }
+
+            if (pw == re_pw) {
+                alert('기존 비밀번호와 다르게 입력하세요.')
+                $('#re_pw').focus()
+                return false;
+            }
+
+            if (re_pw2.length <= 0) {
+                alert('변경할 비밀번호를 한번 더 입력하세요.')
+                $('#re_pw2').focus()
+                return false;
+            }
+
+            if (re_pw != re_pw2) {
+                alert('변경할 비밀번호가 일치하지 않습니다.')
+                $('#re_pw2').focus()
+                return false;
+            }
+
+            // alert('ajax 전송시작');
+            $.ajax({
+                type: 'POST',
+                url: "/member/updatePW",
+                data: {
+                    'pw': $('#pw').val(),
+                    're_pw': $('#re_pw').val()
+                    // 'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function(request) {
+                    // alert('ajax 통신성공');
+                    // alert(request.login_status);
+                    alert('비밀번호가 변경되었습니다.\n변경된 비밀번호로 다시 로그인 해주세요.')
+                    window.location.replace("/index");
+                },
+                error: function(request, status, error) {
+                    // alert(error)
+                    // alert(request)
+                    alert('회원 정보가 일치하지 않습니다.');
+                    $('#pw').val('')
+                    $('#re_pw').val('')
+                    $('#re_pw2').val('')
+                    $('#pw').focus()
+                }
+            })
+        })
+    })
+</script>
+{% endblock %}

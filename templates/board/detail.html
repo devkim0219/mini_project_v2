@@ -1,0 +1,54 @@
+{% extends "board/base.html" %}
+
+{% block title %}
+응원 게시판 - {{board.brd_title}}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-top-border">
+        <h3 class="mb-30">응원 게시판 - {{board.brd_title}}</h3>
+        <div class="col-sm-6 col-md-offset-3">
+            <div class="form-group">
+                <label>글번호 :</label>
+                <label>{{board.brd_no}}</label>
+            </div>
+            <div class="form-group">
+                <label>제목 :</label>
+                <label>{{board.brd_title}}</label>
+            </div>
+            <div class="form-group">
+                <label>내용 :</label>
+                <label>{{board.brd_content}}</label>
+            </div>
+            <div class="form-group">
+                <label>작성자 :</label>
+                <label>{{board.brd_writer}}</label>
+            </div>
+            <div class="form-group">
+                <label>조회수 :</label>
+                <label>{{board.brd_hit}}</label>
+            </div>
+            <div class="form-group">
+                <label>작성일 :</label>
+                <label>{{board.brd_date | date:"Y-m-d"}}</label>
+            </div>
+            <div class="form-group text-right">
+                <button class="genric-btn primary radius" onclick="location.href='/board/boardList'">목록으로</button>
+                {% if preNo.brd_no != None %}
+                    <button class="genric-btn primary radius" onclick="location.href='/board/detail?no={{preNo.brd_no}}'">이전글</button>
+                {% endif %}
+                {% if nextNo.brd_no != None %}
+                    <button class="genric-btn primary radius" onclick="location.href='/board/detail?no={{nextNo.brd_no}}'">다음글</button>
+                {% endif %}
+                {% if 'userId' in request.session %}
+                    {% if request.session.userName == board.brd_writer %}
+                        <button class="genric-btn primary radius" onclick="location.href='/board/update?no={{request.GET.no}}'">수정</button>
+                        <button class="genric-btn primary radius" onclick="location.href='/board/delete?no={{request.GET.no}}'">삭제</button>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>        
+{% endblock %}

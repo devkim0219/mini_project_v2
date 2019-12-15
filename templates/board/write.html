@@ -1,0 +1,56 @@
+{% extends "board/base.html" %}
+
+{% block title %}
+글 작성
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-top-border">
+        <h3 class="mb-30">글 작성</h3>
+        <div class="col-sm-6 col-md-offset-3">
+            <form role="form" action="/board/write" method="post">
+                <div class="form-group">
+                    <label>제목 :</label>
+                    <input type="text" name="title" class="form-control" id="title" placeholder="제목을 입력해주세요">
+                </div>
+                <div class="form-group">
+                    <label>내용 :</label>
+                    <textarea rows="6" name="content" class="form-control" id="content" placeholder="내용을 입력해주세요"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>작성자 :</label>
+                    <label>{{request.session.userName}}</label>
+                </div>
+                <div class="form-group text-right">
+                    <button type="submit" class="genric-btn primary radius" id="btn_write">글등록</button>
+                    <button type="button" class="genric-btn primary radius" onclick="history.go(-1)">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    $(function() {
+        $('#btn_write').click(function() {
+            var title = $("#title").val()
+            var content = $("#content").val()
+
+            if (title == "") {
+                alert("제목을 입력해주세요.");
+                $("#title").focus();
+                return false;
+            }
+
+            if (content == "") {
+                alert("내용을 입력해주세요.");
+                $("#content").focus();
+                return false;
+            }
+        })
+    })
+</script>
+{% endblock %}

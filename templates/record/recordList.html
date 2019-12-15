@@ -1,0 +1,135 @@
+{% extends "board/base.html" %}
+
+{% block title %}
+경기 기록실
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-top-border">
+        <h3 class="mb-30">경기 기록실</h3>
+        <div style="margin-right: 15px;">
+            <form action="/record/recordList" method="get">
+                <div class="form-inline row justify-content-end" style="margin-bottom: 10px;">
+                    <div class="default-select" id="default-select">
+                        <select name="searchYear">
+                            <option value="">년도</option>
+                            <option value="2019">2019년</option>
+                            <option value="2018">2018년</option>
+                            <option value="2017">2017년</option>
+                            <option value="2016">2016년</option>
+                        </select>
+                    </div>
+                    <div class="default-select ml-10" id="default-select">
+                        <select name="searchMonth">
+                            <option value="">월</option>
+                            <option value="12">12월</option>
+                            <option value="11">11월</option>
+                            <option value="10">10월</option>
+                            <option value="09">9월</option>
+                            <option value="08">8월</option>
+                            <option value="07">7월</option>
+                            <option value="06">6월</option>
+                            <option value="05">5월</option>
+                            <option value="04">4월</option>
+                            <option value="03">3월</option>
+                            <option value="02">2월</option>
+                            <option value="01">1월</option>
+                        </select>
+                    </div>
+                    <div class="ml-10">
+                        <input type="submit" class="genric-btn primary radius" value="검색">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="table table-hover table_text_center">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">DATE</th>
+                    <th scope="col">구장</th>
+                    <th scope="col">원정팀</th>
+                    <th scope="col">원정팀점수</th>
+                    <th scope="col">홈팀점수</th>
+                    <th scope="col">홈팀</th>
+                    <th scope="col">원정팀결과</th>
+                    <th scope="col">홈팀결과</th>
+                    <th scope="col">비고</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for tmp in posts %}
+                <tr>
+                    <td>{{tmp.rcd_date}}</td>
+                    <td>{{tmp.rcd_gujang}}</td>
+                    <td>{{tmp.rcd_awayteam}}</td>
+                    <td>{{tmp.rcd_awaypoint}}</td>
+                    <td>{{tmp.rcd_homepoint}}</td>
+                    <td>{{tmp.rcd_hometeam}}</td>
+                    <td>{{tmp.rcd_awayresult}}</td>
+                    <td>{{tmp.rcd_homeresult}}</td>
+                    <td>{{tmp.rcd_etc}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if posts.0 is None %}
+        <div class="row justify-content-center">
+            <p>경기 기록이 존재하지 않습니다.</p>
+        </div>
+        {% endif %}
+        
+        <nav class="blog-pagination justify-content-center d-flex">
+            <ul class="pagination">
+                {% if posts.has_previous %}
+                    <li class="page-item">
+                        <a href="?page=1&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">
+                                첫페이지
+                                <!-- <span class="lnr lnr-chevron-left"></span> -->
+                            </span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a href="?page={{posts.previous_page_number}}&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">
+                                이전페이지
+                                <!-- <span class="lnr lnr-chevron-left"></span> -->
+                            </span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if posts.0 is not None %}
+                    <li class="page-item"><a href="#" class="page-link">{{posts.number}}</a></li>
+                    <li class="page-item"><a href="#" class="page-link">/</a></li>
+                    <li class="page-item"><a href="#" class="page-link">{{posts.paginator.num_pages}}</a></li>
+                {% endif %}
+                {% if posts.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{posts.next_page_number}}&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Next">
+                            <span aria-hidden="true">
+                                다음페이지
+                                <!-- <span class="lnr lnr-chevron-right"></span> -->
+                            </span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a href="?page={{posts.paginator.num_pages}}&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Next">
+                            <span aria-hidden="true">
+                                마지막페이지
+                                <!-- <span class="lnr lnr-chevron-right"></span> -->
+                            </span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        <div class="row justify-content-end">
+            <div style="margin-right: 15px;">
+                <button class="genric-btn primary radius" onclick="location.href='/index'">홈으로</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends "board/base.html" %}
+
+{% block title %}
+투수 기록실
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-top-border">
+        <h3 class="mb-30">투수 기록실</h3>
+        <div style="margin-right: 15px;">
+            <form action="/record/pitcherList" method="get">
+                <div class="form-inline row justify-content-end" style="margin-bottom: 10px;">
+                    <div class="default-select" id="default-select">
+                        <select name="type">
+                            <option value="p_team">팀 명</option>
+                            <option value="p_name">선수명</option>
+                        </select>
+                    </div>
+                    <div class="ml-10">
+                        <input type="text" name="text" placeholder="검색할 내용 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '검색할 내용 입력'" class="single-input">
+                    </div>
+                    <div class="ml-10">
+                        <input type="submit" class="genric-btn primary radius" value="검색">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="table table-hover table_text_center">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">선수명</th>
+                    <th scope="col">팀명</th>
+                    <th scope="col">평균자책점</th>
+                    <th scope="col">게임</th>
+                    <th scope="col">승</th>
+                    <th scope="col">패</th>
+                    <th scope="col">세이브</th>
+                    <th scope="col">홀드</th>
+                    <th scope="col">승률</th>
+                    <th scope="col">이닝</th>
+                    <th scope="col">피안타</th>
+                    <th scope="col">피홈런</th>
+                    <th scope="col">볼넷</th>
+                    <th scope="col">사구</th>
+                    <th scope="col">삼진</th>
+                    <th scope="col">실점</th>
+                    <th scope="col">자책점</th>
+                    <th scope="col">WHIP</th>
+                </tr>
+            </thead>
+            <tbody> 
+            {% for tmp in posts %}
+                <tr>
+                    <td>{{ tmp.p_name }}</td> 
+                    <td>{{ tmp.p_team }}</td>
+                    <td style="color: #e76a6a;">{{ tmp.p_era }}</td>
+                    <td>{{ tmp.p_game }}</td>
+                    <td>{{ tmp.p_win }}</td>
+                    <td>{{ tmp.p_lose }}</td>
+                    <td>{{ tmp.p_sv }}</td>
+                    <td>{{ tmp.p_hld }}</td>
+                    <td>{{ tmp.p_wpct }}</td>
+                    <td>{{ tmp.p_ip }}</td>
+                    <td>{{ tmp.p_h }}</td>
+                    <td>{{ tmp.p_hr }}</td>
+                    <td>{{ tmp.p_bb }}</td>
+                    <td>{{ tmp.p_hbp }}</td>
+                    <td>{{ tmp.p_so }}</td>
+                    <td>{{ tmp.p_r }}</td>
+                    <td>{{ tmp.p_er }}</td>
+                    <td>{{ tmp.p_whip }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% if posts.0 is None %}
+            <div class="row justify-content-center">
+                <p>투수 기록이 존재하지 않습니다.</p>
+            </div>
+        {% endif %}
+
+        <nav class="blog-pagination justify-content-center d-flex">
+            <ul class="pagination">
+                {% if posts.has_previous %}
+                    <li class="page-item">
+                        <a href="?page=1&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">
+                                첫페이지
+                                <!-- <span class="lnr lnr-chevron-left"></span> -->
+                            </span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a href="?page={{posts.previous_page_number}}&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">
+                                이전페이지
+                                <!-- <span class="lnr lnr-chevron-left"></span> -->
+                            </span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if posts.0 is not None %}
+                    <li class="page-item"><a href="#" class="page-link">{{posts.number}}</a></li>
+                    <li class="page-item"><a href="#" class="page-link">/</a></li>
+                    <li class="page-item"><a href="#" class="page-link">{{posts.paginator.num_pages}}</a></li>
+                {% endif %}
+                {% if posts.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{posts.next_page_number}}&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Next">
+                            <span aria-hidden="true">
+                                다음페이지
+                                <!-- <span class="lnr lnr-chevron-right"></span> -->
+                            </span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a href="?page={{posts.paginator.num_pages}}&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Next">
+                            <span aria-hidden="true">
+                                마지막페이지
+                                <!-- <span class="lnr lnr-chevron-right"></span> -->
+                            </span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+            
+        <div class="row justify-content-end">
+            <div style="margin-right: 15px;">
+                <button class="genric-btn primary radius" onclick="location.href='/index'">홈으로</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,122 @@
+{% extends "board/base.html" %}
+
+{% block title %}
+회원정보수정
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-top-border">
+        <h3 class="mb-30">회원정보수정</h3>
+        <div class="col-sm-6 col-md-offset-3">
+            <div class="form-group">
+                <label>아이디 :</label>
+                <label>{{member.mem_id}}</label>
+            </div>
+            <div class="form-group">
+                <label>이름 :</label>
+                <input type="text" id="name" class="form-control" value="{{member.mem_name}}">
+            </div>
+            <div class="form-group">
+                <label>연락처 :</label>
+                <input type="text" id="tel" class="form-control" value="{{member.mem_tel}}">
+            </div>
+            <div class="form-group">
+                <label>이메일 :</label>
+                <input type="text" id="email" class="form-control" value="{{member.mem_email}}">
+            </div>
+            <div class="form-group">
+                <label>가입일 :</label>
+                <label>{{member.mem_date | date:"Y-m-d"}}</label>
+            </div>
+            <div class="form-group text-right">
+                <button class="genric-btn primary radius" id="btn_update">수정</button>
+                <button class="genric-btn primary radius" onclick="history.go(-1)">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    $(function() {
+        var nameCheck = RegExp(/^[가-힣]+$/);
+        var phoneCheck = RegExp(/^[0-9]{3}-[0-9]{4}-[0-9]{4}/);
+        var emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
+
+        $('#btn_update').click(function() {
+            var name = $("#name").val()
+            var tel = $("#tel").val()
+            var email = $("#email").val()
+
+            if (name == "") {
+                alert("이름을 입력해주세요.");
+                $("#name").focus();
+                return false;
+            }
+
+            if (!nameCheck.test(name)) {
+                alert("이름 형식이 맞지 않습니다.");
+                $("#name").val("")
+                $("#name").focus();
+                return false;
+            }
+
+            if (tel == "") {
+                alert("휴대폰 번호를 입력해주세요.");
+                $("#tel").focus();
+                return false;
+            }
+
+            if (!phoneCheck.test(tel)) {
+                alert("휴대폰 번호 형식이 맞지 않습니다.");
+                $("#tel").val("")
+                $("#tel").focus();
+                return false;
+            }
+            
+            if (email == "") {
+                alert("이메일 주소를 입력해주세요.");
+                $("#email").focus();
+                return false;
+            }
+
+            if (!emailCheck.test(email)) {
+                alert("이메일 형식이 맞지 않습니다.");
+                $("#email").val("")
+                $("#email").focus();
+                return false;
+            }
+
+            // alert('ajax 전송시작');
+            $.ajax({
+                type: 'POST',
+                url: "/member/updateInfo",
+                data: {
+                    'name': name,
+                    'tel': tel,
+                    'email': email,
+                    // 'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function(request) {
+                    // alert('ajax 통신성공');
+                    // alert(request.login_status);
+                    alert('회원 정보가 수정되었습니다.')
+                    window.location.replace("/index");
+                },
+                error: function(request, status, error) {
+                    // alert(error)
+                    // alert(request)
+                    alert('update failed! - please try again');
+                    $('#name').val('')
+                    $('#tel').val('')
+                    $('#email').val('')
+                    $("#name").focus();
+                }
+            })
+        })
+    })
+</script>
+{% endblock %}

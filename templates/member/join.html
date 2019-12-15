@@ -1,0 +1,165 @@
+{% extends "board/base.html" %}
+
+{% block title %}
+회원가입
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-top-border">
+        <h3 class="mb-30">회원가입</h3>
+        <div class="col-sm-6 col-md-offset-3">
+            <div class="form-group">
+                <label>아이디</label>
+                <input type="text" name="id" class="form-control" id="inputId" placeholder="영문 또는 숫자 4~12자 이내로 입력하세요.">
+            </div>
+            <div class="form-group">
+                <label>비밀번호</label>
+                <input type="password" name="pw" class="form-control" id="inputPassword" placeholder="비밀번호를 입력해주세요">
+            </div>
+            <div class="form-group">
+                <label>비밀번호 확인</label>
+                <input type="password" name="pwCheck" class="form-control" id="inputPasswordCheck" placeholder="비밀번호 확인을 위해 다시한번 입력해 주세요">
+            </div>
+            <div class="form-group">
+                <label>이름</label>
+                <input type="text" name="name" class="form-control" id="inputName" placeholder="ex -> 홍길동">
+            </div>
+            <div class="form-group">
+                <label>휴대폰 번호</label>
+                <input type="tel" name="tel" class="form-control" id="inputPhone" placeholder="ex -> 010-1234-5678">
+            </div>
+            <div class="form-group">
+                <label>이메일 주소</label>
+                <input type="email" name="email" class="form-control" id="inputEmail" placeholder="ex -> example@example.com">
+            </div>
+            <div class="form-group text-right">
+                <button type="button" class="genric-btn primary radius" id="btn_join">회원가입</button>
+                <button type="button" class="genric-btn primary radius" onclick="history.go(-1)">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    $(function() {
+        var idCheck = RegExp(/^[a-zA-Z0-9]{4,12}$/);
+        var nameCheck = RegExp(/^[가-힣]+$/);
+        var phoneCheck = RegExp(/^[0-9]{3}-[0-9]{4}-[0-9]{4}/);
+        var emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
+
+        $('#btn_join').click(function() {
+            var id = $("#inputId").val()
+            var pw = $("#inputPassword").val()
+            var re_pw = $("#inputPasswordCheck").val()
+            var name = $("#inputName").val()
+            var phone = $("#inputPhone").val()
+            var email = $("#inputEmail").val()
+
+            // 회원가입 유효성 검사
+            if (id == "") {
+                alert("아이디를 입력해주세요.");
+                $("#inputId").focus();
+                return false;
+            }
+
+            if (!idCheck.test(id)) {
+                alert("아이디 형식이 맞지 않습니다.");
+                $("#inputId").val("")
+                $("#inputId").focus();
+                return false;
+            }
+
+            if (pw == "") {
+                alert("비밀번호를 입력해주세요.");
+                $("#inputPassword").focus();
+                return false;
+            } 
+
+            if (re_pw == "") {
+                alert("비밀번호를 한번 더 입력해주세요.");
+                $("#inputPasswordCheck").focus();
+                return false;
+            }
+
+            if (pw != re_pw) {
+                alert("비밀번호가 일치하지 않습니다.");
+                $("#inputPasswordCheck").focus();
+                return false;
+            }
+
+            if (name == "") {
+                alert("이름을 입력해주세요.");
+                $("#inputName").focus();
+                return false;
+            }
+
+            if (!nameCheck.test(name)) {
+                alert("이름 형식이 맞지 않습니다.");
+                $("#inputName").val("")
+                $("#inputName").focus();
+                return false;
+            }
+            
+            if (phone == "") {
+                alert("휴대폰 번호를 입력해주세요.");
+                $("#inputPhone").focus();
+                return false;
+            }
+
+            if (!phoneCheck.test(phone)) {
+                alert("휴대폰 번호 형식이 맞지 않습니다.");
+                $("#inputPhone").val("")
+                $("#inputPhone").focus();
+                return false;
+            }
+            
+            if (email == "") {
+                alert("이메일 주소를 입력해주세요.");
+                $("#inputEmail").focus();
+                return false;
+            }
+
+            if (!emailCheck.test(email)) {
+                alert("이메일 형식이 맞지 않습니다.");
+                $("#inputEmail").val("")
+                $("#inputEmail").focus();
+                return false;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'join' %}",
+                data: {
+                    'id': $('#inputId').val(),
+                    'pw': $('#inputPassword').val(),
+                    'name': $('#inputName').val(),
+                    'tel': $('#inputPhone').val(),
+                    'email': $('#inputEmail').val(),
+                    // 'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function(request) {
+                    // alert('ajax 통신성공');
+                    alert("회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.")
+                    window.location.replace("{% url 'login' %}");
+                },
+                error: function(request, status, error) {
+                    alert(error)
+                    // alert(request)
+                    alert('join failed! - please try again');
+                    $('#inputId').val('')
+                    $('#inputPassword').val('')
+                    $('#inputPasswordCheck').val('')
+                    $('#inputName').val('')
+                    $('#inputPhone').val('')
+                    $('#inputEmail').val('')
+                    $("#inputId").focus();
+                }
+            })
+        })
+    })
+</script>
+{% endblock %}
