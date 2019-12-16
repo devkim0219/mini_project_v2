@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import connection
 from base64 import b64encode
 from .models import Board
+import json
 from django.db.models import Max, Min
 from django.core.paginator import Paginator
 

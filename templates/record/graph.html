@@ -1,0 +1,23 @@
+{% extends "board/base.html" %}
+
+{% block title %}
+연도별 팀 순위 변동
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-top-border">
+        <h3 class="mb-30">연도별 팀 순위 변동</h3>
+        <div style="margin-right: 15px;">
+            <form action="/record/graph" method="get">
+                <img src="{{graph1}}"/>
+        </div>
+
+        <div class="row justify-content-end">
+            <div style="margin-right: 15px;">
+                <button class="genric-btn primary radius" onclick="location.href='/index'">홈으로</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
