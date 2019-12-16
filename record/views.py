@@ -12,13 +12,19 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import urllib.request, time
+import matplotlib.pyplot as plt #그래프그리기
+from matplotlib import font_manager, rc #한글적용폰트설정
+import io #그래프를 byte로 변경
+import base64 #웹에 출력하기 위해서
+import pandas as pd
+import numpy as np
 
 
 # Create your views here.
 def recordList(request):
     if request.method == "GET":
         # json 파일 내용 DB 에 insert
-        # with open ("C:/Users/admin/Documents/mini_project_v2/data/KBO_data-master/Data/KBO_2016_season.json", 'r', encoding='utf-8') as json_file:
+        # with open ("C:/Users/admin/Documents/mini_project_v2/data/KBO_data-master/Data/KBO_2019_season.json", 'r', encoding='utf-8') as json_file:
         #     dataList = json.load(json_file)
 
         # for data in dataList: 
@@ -40,7 +46,7 @@ def recordList(request):
 
         searchKeyword = ''
 
-        if searchYear != '':
+        if searchYear != '': 
             searchKeyword = searchYear
 
         if searchYear != '' and searchMonth != '':
@@ -185,12 +191,7 @@ def teamyear(request):
 
         # return 0    
             
-import matplotlib.pyplot as plt #그래프그리기
-from matplotlib import font_manager, rc #한글적용폰트설정
-import io #그래프를 byte로 변경
-import base64 #웹에 출력하기 위해서
-import pandas as pd
-import numpy as np
+
 
 def graph(request):
     with open('./data/KBO_data-master/Data/rankteam.json','r',encoding='utf-8') as json_file:
@@ -210,7 +211,7 @@ def graph(request):
     for i in datalist:
         if i['팀명']=='두산':
             doosan_rank.insert(0,i['순위'])
-        elif i['팀명']=='롯데':
+        elif i['팀명']=='롯데': 
             lotte_rank.insert(0,i['순위'])
         elif i['팀명']=='한화':
             hanhwa_rank.insert(0,i['순위'])
@@ -235,23 +236,23 @@ def graph(request):
 
     x = [2016,2017,2018,2019]
     # plt.figure(figsize=(12, 3))
-    plt.plot(x,doosan_rank,label='두산')
-    plt.plot(x,lotte_rank,label='롯데')
-    plt.plot(x,hanhwa_rank,label='한화')
-    plt.plot(x,samsung_rank,label='삼성')
-    plt.plot(x,kt_rank,label='KT')
-    plt.plot(x,sk_rank,label='SK')
-    plt.plot(x,nc_rank,label='NC')
-    plt.plot(x,kiwoom_rank,label='키움')
-    plt.plot(x,kia_rank,label='KIA')
-    plt.plot(x,twins_rank,label='LG')
+    plt.plot(x,doosan_rank,label='두산',marker="o", markersize=5)
+    plt.plot(x,lotte_rank,label='롯데',marker="o", markersize=5)
+    plt.plot(x,hanhwa_rank,label='한화',marker="o", markersize=5)
+    plt.plot(x,samsung_rank,label='삼성',marker="o", markersize=5)
+    plt.plot(x,kt_rank,label='KT',marker="o", markersize=5)
+    plt.plot(x,sk_rank,label='SK',marker="o", markersize=5)
+    plt.plot(x,nc_rank,label='NC',marker="o", markersize=5)
+    plt.plot(x,kiwoom_rank,label='키움',marker="o", markersize=5)
+    plt.plot(x,kia_rank,label='KIA',marker="o", markersize=5)
+    plt.plot(x,twins_rank,label='LG',marker="o", markersize=5)
     plt.yticks(np.arange(1,11,1))
     plt.gca().invert_yaxis()
     plt.xticks(np.arange(2016,2020,1))   
     plt.xlabel('연도')
     plt.ylabel('순위')
     plt.title('팀 순위 변동 그래프')
-    plt.legend()
+    plt.legend(loc='upper left', bbox_to_anchor=(1.0, 1.0),prop={'size':7.3})
     plt.draw()
     img =io.BytesIO() #그린그래프를 바이트로 변경
     plt.savefig(img, format="png") #png포맷으로 변경
