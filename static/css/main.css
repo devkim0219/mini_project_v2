@@ -2444,6 +2444,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 .banner-area .fullscreen {
   height: 400px !important;
+  padding-top: 40px;
 }
 
 .banner-left h6 {
