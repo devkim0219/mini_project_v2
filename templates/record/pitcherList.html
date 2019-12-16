@@ -141,14 +141,14 @@
 
 {% block script %}
 <script type="text/javascript">
-    function imageOn(path, x, y){ 
+    function imageOn(path, x, y) { 
         var divform = $("#pop_up"); 
         divform.css('display', '');
         divform.css({left: x, top: y})
         $("#up_img").attr('src', path); 
     } 
     
-    function imageOff(){ 
+    function imageOff() { 
         var divform = $("#pop_up"); 
         divform.css('display', 'none');
     }
@@ -157,8 +157,7 @@
         $('.tr_mouseover').mouseover(function(e) {
             x = e.pageX
             y = e.pageY
-            name = $('.player_name').text()
-            alert(name)
+            name = $(this).text().split('\n')[1].trim()
             imageOn('/static/src/players_img/' + name + '.PNG', x, y)
         })
 
