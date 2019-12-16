@@ -83,7 +83,7 @@
             <ul class="pagination">
                 {% if posts.has_previous %}
                     <li class="page-item">
-                        <a href="?page=1&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Previous">
+                        <a href="?page=1&searchYear={{searchYear}}&searchMonth={{searchMonth}}" class="page-link" aria-label="Previous">
                             <span aria-hidden="true">
                                 첫페이지
                                 <!-- <span class="lnr lnr-chevron-left"></span> -->
@@ -91,7 +91,7 @@
                         </a>
                     </li>
                     <li class="page-item">
-                        <a href="?page={{posts.previous_page_number}}&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Previous">
+                        <a href="?page={{posts.previous_page_number}}&searchYear={{searchYear}}&searchMonth={{searchMonth}}" class="page-link" aria-label="Previous">
                             <span aria-hidden="true">
                                 이전페이지
                                 <!-- <span class="lnr lnr-chevron-left"></span> -->
@@ -106,7 +106,7 @@
                 {% endif %}
                 {% if posts.has_next %}
                     <li class="page-item">
-                        <a href="?page={{posts.next_page_number}}&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Next">
+                        <a href="?page={{posts.next_page_number}}&searchYear={{searchYear}}&searchMonth={{searchMonth}}" class="page-link" aria-label="Next">
                             <span aria-hidden="true">
                                 다음페이지
                                 <!-- <span class="lnr lnr-chevron-right"></span> -->
@@ -114,7 +114,7 @@
                         </a>
                     </li>
                     <li class="page-item">
-                        <a href="?page={{posts.paginator.num_pages}}&type={{searchtype}}&text={{searchkeyword}}" class="page-link" aria-label="Next">
+                        <a href="?page={{posts.paginator.num_pages}}&searchYear={{searchYear}}&searchMonth={{searchMonth}}" class="page-link" aria-label="Next">
                             <span aria-hidden="true">
                                 마지막페이지
                                 <!-- <span class="lnr lnr-chevron-right"></span> -->

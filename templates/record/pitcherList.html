@@ -51,8 +51,8 @@
             </thead>
             <tbody> 
             {% for tmp in posts %}
-                <tr>
-                    <td>{{ tmp.p_name }}</td> 
+                <tr class="tr_mouseover">
+                    <td class="player_name">{{ tmp.p_name }}</td> 
                     <td>{{ tmp.p_team }}</td>
                     <td style="color: #e76a6a;">{{ tmp.p_era }}</td>
                     <td>{{ tmp.p_game }}</td>
@@ -133,5 +133,37 @@
             </div>
         </div>
     </div>
+    <div id="pop_up" style="position:absolute; width:40%; left:700px; top:300px; display:none;">
+        <img id="up_img" src="#" width="100%" height="100%"/>
+    </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    function imageOn(path, x, y) { 
+        var divform = $("#pop_up"); 
+        divform.css('display', '');
+        divform.css({left: x, top: y})
+        $("#up_img").attr('src', path); 
+    } 
+    
+    function imageOff() { 
+        var divform = $("#pop_up"); 
+        divform.css('display', 'none');
+    }
+    
+    $(function() {
+        $('.tr_mouseover').mouseover(function(e) {
+            x = e.pageX
+            y = e.pageY
+            name = $(this).text().split('\n')[1].trim()
+            imageOn('/static/src/players_img/' + name + '.PNG', x, y)
+        })
+
+        $('.tr_mouseover').mouseleave(function() {
+            imageOff()
+        })
+    })
+</script>
 {% endblock %}

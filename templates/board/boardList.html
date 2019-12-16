@@ -103,9 +103,9 @@
 
         <div class="row justify-content-end">
             <div style="margin-right: 15px;">
-                <button class="genric-btn primary radius" onclick="location.href='/index'">홈으로</button>
+                <button type="button" class="genric-btn primary radius" onclick="location.href='/index'">홈으로</button>
                 {% if 'userId' in request.session %}
-                    <button class="genric-btn primary radius" onclick="location.href='write'">글쓰기</button>
+                    <button type="button" class="genric-btn primary radius" onclick="location.href='write'">글쓰기</button>
                 {% endif %}
             </div>
         </div>
