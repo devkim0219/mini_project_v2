@@ -8,5 +8,4 @@ urlpatterns = [
     path('teamyear', views.teamyear, name='teamyear'),
     path('graph', views.graph, name='graph'),
     path('highlight', views.highlight, name='highlight')
-
 ]

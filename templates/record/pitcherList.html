@@ -133,11 +133,7 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-    <div id="pop_up" style="position:absolute; width:40%; left:700px; top:300px; display:none;">
-=======
-    <div id="pop_up" style="position:absolute; width:40%; display:none;">
->>>>>>> 93c1d2d70b092e611f283fee41bf33ae2d581546
+    <div id="pop_up" style="position:absolute; width:45%; display:none;">
         <img id="up_img" width="100%" height="100%"/>
     </div>
 </div>
@@ -146,9 +142,9 @@
 {% block script %}
 <script type="text/javascript">
     function imageOn(path, x, y) { 
-        var divform = $("#pop_up"); 
+        var divform = $("#pop_up");
+        divform.css({left: x + 1, top: y + 3}) 
         divform.css('display', '');
-        divform.css({left: x, top: y})
         $("#up_img").attr('src', path); 
     } 
     
@@ -157,17 +153,17 @@
         divform.css('display', 'none');
     }
     
-    $(function() {
+    $('.tr_mouseover').hover(function() {
         $('.tr_mouseover').mouseover(function(e) {
             x = e.pageX
             y = e.pageY
             name = $(this).text().split('\n')[1].trim()
             imageOn('/static/src/players_img/' + name + '.PNG', x, y)
         })
+    })
 
-        $('.tr_mouseover').mouseleave(function() {
-            imageOff()
-        })
+    $('.tr_mouseover').mouseleave(function() {
+        imageOff()
     })
 </script>
 {% endblock %}
