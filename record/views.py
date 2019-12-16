@@ -92,13 +92,14 @@ def pitcherList(request):
 
         searchtype = request.GET.get('type','')
         searchkeyword = request.GET.get('text','')
+
         if searchtype == 'p_team':
             pitcherList = Pitcher.objects.filter(p_team__icontains=searchkeyword).order_by('p_team')
             
         elif searchtype == 'p_name':
             pitcherList = Pitcher.objects.filter(p_name__icontains=searchkeyword).order_by('p_team')
 
-        if searchtype == '' and searchkeyword == '':
+        if searchkeyword == '':
             pitcherList = Pitcher.objects.raw('SELECT * FROM RECORD_PITCHER WHERE (CAST(P_IP as INTEGER) >= 144) ORDER BY P_ERA')
 
         paginator = Paginator(pitcherList, 15)
@@ -142,7 +143,7 @@ def hitterList(request):
         elif searchtype == 'h_name':
             hitterList = Hitter.objects.filter(h_name__icontains=searchkeyword).order_by('h_team', '-h_avg')
 
-        if searchtype == '' and searchkeyword == '':
+        if searchkeyword == '':
             hitterList = Hitter.objects.raw('SELECT * FROM RECORD_HITTER WHERE (CAST(H_PA as INTEGER) >= 446) ORDER BY H_AVG DESC')
 
         paginator = Paginator(hitterList, 15)
