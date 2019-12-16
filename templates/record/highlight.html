@@ -1,0 +1,98 @@
+{% extends "board/base.html" %}
+
+{% block title %}
+KBO 하이라이트
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-top-border">
+        <h3 class="mb-30">KBO 하이라이트</h3>
+        <div style="margin-right: 15px;">
+            <form action="/record/highlight" method="GET">
+
+            </form>
+        </div>
+        <table class="table table-hover table_text_center">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" width = "80">순위</th>
+                    <th scope="col" width = "350">제목</th>
+                    <th scope="col" width = "500">댓글</th>
+                </tr>
+            </thead>
+            <tbody >
+
+
+                <tr>
+                    <th>1</th>
+                    <th>야구인가 축구인가.. MLB 홈페이지에 진출한 신본기의 헤딩 어시스트!
+                        <p></p>
+                        <p></p>
+                        <iframe width="550" height="300" src="https://www.youtube.com/embed/SQmrWr8YuC8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        
+                    </th>
+                    <td>
+                        
+
+                        
+                    </td>
+                </tr>
+                
+                
+                
+                <tr>
+                    <th>2</th>
+                    <th>{{kbo_title.0}}
+                        <p></p>
+                        <p></p>
+                        <p><iframe width="550" height="300" src="https://www.youtube.com{{ kbo_link.0 }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </p>                                    
+
+
+                    </th>
+                    <td></td>
+                </tr>
+            
+                <tr>
+                    <th>3</th>
+                    <th>{{kbo_title.1}}
+                        <p></p>
+                        <iframe width="550" height="300" src="https://www.youtube.com{{ kbo_link.1 }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>    
+
+                    </th>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <th>4</th>
+                    <th>{{kbo_title.2}}
+                        <p></p> <p></p>
+                        <iframe width="550" height="300" src="https://www.youtube.com{{ kbo_link.2 }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>    
+
+                    </th>
+                    <td></td>
+                </tr>
+                
+                
+                <tr>
+                    <th>5</th>
+                    <th>{{kbo_title.7}}
+                        <p></p> <p></p>
+                        <iframe width="550" height="300" src="https://www.youtube.com{{ kbo_link.7 }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </th>
+                    <td></td>
+                </tr>
+
+            </tbody>
+        </table>
+       
+
+        <div class="row justify-content-end">
+            <div style="margin-right: 15px;">
+                <button class="genric-btn primary radius" onclick="location.href='/index'">홈으로</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
