@@ -230,7 +230,7 @@ def graph(request):
             kiwoom_rank.insert(0,i['순위'])
         elif i['팀명']=='KIA':
             kia_rank.insert(0,i['순위'])
-        elif i['팀명']=='LG':
+        elif i['팀명']=='LG': 
             twins_rank.insert(0,i['순위'])
 
     font_name = font_manager.FontProperties(
@@ -252,7 +252,7 @@ def graph(request):
     plt.yticks(np.arange(1,11,1))
     plt.gca().invert_yaxis()
     plt.xticks(np.arange(2016,2020,1))   
-    plt.xlabel('연도')
+    plt.xlabel('연도') 
     plt.ylabel('순위')
     plt.title('팀 순위 변동 그래프')
     plt.legend(loc='upper left', bbox_to_anchor=(1.0, 1.0),prop={'size':7.3})
