@@ -48,8 +48,8 @@
             </thead>
             <tbody>
             {% for tmp in posts %}
-                <tr>
-                    <td>{{ tmp.h_name }}</td> 
+                <tr class="tr_mouseover">
+                    <td class="player_name">{{ tmp.h_name }}</td> 
                     <td>{{ tmp.h_team }}</td> 
                     <td style="color: #e76a6a;">{{ tmp.h_avg }}</td> 
                     <td>{{ tmp.h_game }}</td>
@@ -125,6 +125,38 @@
                 <button class="genric-btn primary radius" onclick="location.href='/index'">홈으로</button>
             </div>
         </div>
+        <div id="pop_up" style="position:absolute; width:45%; display:none;">
+            <img id="up_img" width="100%" height="100%"/>
+        </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    function imageOn(path, x, y) { 
+        var divform = $("#pop_up");
+        divform.css({left: x + 1, top: y + 3}) 
+        divform.css('display', '');
+        $("#up_img").attr('src', path); 
+    } 
+    
+    function imageOff() { 
+        var divform = $("#pop_up"); 
+        divform.css('display', 'none');
+    }
+    
+    $('.tr_mouseover').hover(function() {
+        $('.tr_mouseover').mouseover(function(e) {
+            x = e.pageX
+            y = e.pageY
+            name = $(this).text().split('\n')[1].trim()
+            imageOn('/static/src/players_img/' + name + '.PNG', x, y)
+        })
+    })
+
+    $('.tr_mouseover').mouseleave(function() {
+        imageOff()
+    })
+</script>
 {% endblock %}
