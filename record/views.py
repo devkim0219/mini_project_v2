@@ -5,18 +5,32 @@ from .models import Record
 from .models import Pitcher
 from .models import Team
 from .models import Hitter
+import json
+import sqlite3
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import urllib.request, time
+<<<<<<< HEAD
 import json
+=======
+import matplotlib.pyplot as plt #그래프그리기
+from matplotlib import font_manager, rc #한글적용폰트설정
+import io #그래프를 byte로 변경
+import base64 #웹에 출력하기 위해서
+import pandas as pd
+import numpy as np
+
+>>>>>>> 379a4ce6b9608b71031ff455796eee10977f8865
 
 # Create your views here.
 def recordList(request):
     if request.method == "GET":
         # json 파일 내용 DB 에 insert
-        # dataList = []
+        # with open ("C:/Users/admin/Documents/mini_project_v2/data/KBO_data-master/Data/KBO_2019_season.json", 'r', encoding='utf-8') as json_file:
+        # with open ("D:/MyDev/mini_project_v2/data/KBO_data-master/Data/KBO_2016_season.json",'r',encoding='utf-8') as json_file:
+        #     dataList = json.load(json_file)
 
         # for data in dataList: 
         #     date = data['Date']
@@ -37,7 +51,7 @@ def recordList(request):
 
         searchKeyword = ''
 
-        if searchYear != '':
+        if searchYear != '': 
             searchKeyword = searchYear
 
         if searchYear != '' and searchMonth != '':
@@ -51,11 +65,13 @@ def recordList(request):
 
         return render(request, 'record/recordList.html', {'recordList': recordList, 'posts': posts, 'searchYear': searchYear, 'searchMonth': searchMonth})
 
-def pitcherList(request):
+def pitcherList(request): 
     if request.method == "GET":
         # json 파일 내용 db에 insert
-        # datalist =[]
-
+        # with open ("C:/Users/admin/Documents/mini_project_v2/data/KBO_data-master/Data/pitcher.json",'r',encoding='utf-8') as json_file:
+        # with open ("D:/MyDev/mini_project_v2/data/KBO_data-master/Data/pitcher.json",'r',encoding='utf-8') as json_file:
+        #     datalist = json.load(json_file)
+    
         # for data in datalist:
         #     p_no   = data['순위']
         #     p_name = data['선수명']
@@ -82,13 +98,14 @@ def pitcherList(request):
 
         searchtype = request.GET.get('type','')
         searchkeyword = request.GET.get('text','')
+
         if searchtype == 'p_team':
             pitcherList = Pitcher.objects.filter(p_team__icontains=searchkeyword).order_by('p_team')
             
         elif searchtype == 'p_name':
             pitcherList = Pitcher.objects.filter(p_name__icontains=searchkeyword).order_by('p_team')
 
-        if searchtype == '' and searchkeyword == '':
+        if searchkeyword == '':
             pitcherList = Pitcher.objects.raw('SELECT * FROM RECORD_PITCHER WHERE (CAST(P_IP as INTEGER) >= 144) ORDER BY P_ERA')
 
         paginator = Paginator(pitcherList, 15)
@@ -100,7 +117,9 @@ def pitcherList(request):
 def hitterList(request):
     if request.method == "GET":
         # json 파일 내용 db에 insert
-        # datalist=[]
+        # with open ("C:/Users/admin/Documents/mini_project_v2/data/KBO_data-master/Data/hitter.json",'r',encoding='utf-8') as json_file:
+        # with open ("D:/MyDev/mini_project_v2/data/KBO_data-master/Data/hitter.json",'r',encoding='utf-8') as json_file:
+        #     datalist = json.load(json_file)
 
         # for data in datalist:
         #     h_no = data['순위']
@@ -127,11 +146,11 @@ def hitterList(request):
         searchkeyword = request.GET.get('text','')
         if searchtype == 'h_team':
             hitterList = Hitter.objects.filter(h_team__icontains=searchkeyword).order_by('h_team', '-h_avg')
-            # print(hitterList, "@@@@@@@@@@@@")
+
         elif searchtype == 'h_name':
             hitterList = Hitter.objects.filter(h_name__icontains=searchkeyword).order_by('h_team', '-h_avg')
 
-        if searchtype == '' and searchkeyword == '':
+        if searchkeyword == '':
             hitterList = Hitter.objects.raw('SELECT * FROM RECORD_HITTER WHERE (CAST(H_PA as INTEGER) >= 446) ORDER BY H_AVG DESC')
 
         paginator = Paginator(hitterList, 15)
@@ -144,10 +163,13 @@ def hitterList(request):
 
         return render(request, 'record/hitterList.html', {'hitterList' : hitterList, 'posts':posts, 'pageList':pageList, 'searchtype':searchtype, 'searchkeyword':searchkeyword})
 
+@csrf_exempt
 def teamyear(request):
     if request.method =='GET':
         # json 파일 내용 db에 insert
-        # datalist = []
+        # with open ("C:/Users/admin/Documents/mini_project_v2/data/KBO_data-master/Data/rankteam.json",'r',encoding='utf-8') as json_file:
+        # with open ("D:/MyDev/mini_project_v2/data/KBO_data-master/Data/rankteam.json",'r',encoding='utf-8') as json_file:
+        #     datalist = json.load(json_file)
 
         # for data in datalist:
         #     t_no   = data['순위']
@@ -178,9 +200,77 @@ def teamyear(request):
 
         return render(request, 'record/teamyear.html',{'teamList':teamList, 't_year':search_year})
 
+def graph(request):
+    with open('./data/KBO_data-master/Data/rankteam.json','r',encoding='utf-8') as json_file:
+        datalist = json.load(json_file)
+    
+    doosan_rank =[]
+    lotte_rank =[]
+    hanhwa_rank =[]
+    samsung_rank =[]
+    kt_rank =[]
+    sk_rank =[] 
+    nc_rank =[]
+    kiwoom_rank =[]
+    kia_rank =[]
+    twins_rank =[]
+
+    for i in datalist:
+        if i['팀명']=='두산':
+            doosan_rank.insert(0,i['순위'])
+        elif i['팀명']=='롯데': 
+            lotte_rank.insert(0,i['순위'])
+        elif i['팀명']=='한화':
+            hanhwa_rank.insert(0,i['순위'])
+        elif i['팀명']=='삼성':
+            samsung_rank.insert(0,i['순위'])
+        elif i['팀명']=='KT':
+            kt_rank.insert(0,i['순위'])
+        elif i['팀명']=='SK':
+            sk_rank.insert(0,i['순위'])
+        elif i['팀명']=='NC':
+            nc_rank.insert(0,i['순위'])            
+        elif i['팀명']=='키움'or i['팀명']=='넥센':
+            kiwoom_rank.insert(0,i['순위'])
+        elif i['팀명']=='KIA':
+            kia_rank.insert(0,i['순위'])
+        elif i['팀명']=='LG': 
+            twins_rank.insert(0,i['순위'])
+
+    font_name = font_manager.FontProperties(
+        fname="c:/Windows/Fonts/malgun.ttf").get_name()
+    rc('font', family=font_name)
+
+    x = [2016,2017,2018,2019]
+    # plt.figure(figsize=(12, 3))
+    plt.plot(x,doosan_rank,label='두산',marker="o", markersize=5)
+    plt.plot(x,lotte_rank,label='롯데',marker="o", markersize=5)
+    plt.plot(x,hanhwa_rank,label='한화',marker="o", markersize=5)
+    plt.plot(x,samsung_rank,label='삼성',marker="o", markersize=5)
+    plt.plot(x,kt_rank,label='KT',marker="o", markersize=5)
+    plt.plot(x,sk_rank,label='SK',marker="o", markersize=5)
+    plt.plot(x,nc_rank,label='NC',marker="o", markersize=5)
+    plt.plot(x,kiwoom_rank,label='키움',marker="o", markersize=5)
+    plt.plot(x,kia_rank,label='KIA',marker="o", markersize=5)
+    plt.plot(x,twins_rank,label='LG',marker="o", markersize=5)
+    plt.yticks(np.arange(1,11,1))
+    plt.gca().invert_yaxis()
+    plt.xticks(np.arange(2016,2020,1))   
+    plt.xlabel('연도') 
+    plt.ylabel('순위')
+    plt.title('팀 순위 변동 그래프')
+    plt.legend(loc='upper left', bbox_to_anchor=(1.0, 1.0),prop={'size':7.3})
+    plt.draw()
+    img =io.BytesIO() #그린그래프를 바이트로 변경
+    plt.savefig(img, format="png") #png포맷으로 변경
+    graph_url=base64.b64encode(img.getvalue()).decode()
+    plt.close() #그래프 종료
+    
+    return render(request, 'record/graph.html',{"graph1":'data:image/png;base64,{}'.format(graph_url)})
 
 def highlight(request):
     if request.method =='GET':
+<<<<<<< HEAD
         with open('./data/KBO_data-master/Data/kbo_title.json','r',encoding='utf-8') as kbo_title:
             kbo_title = json.load(kbo_title)
         with open('./data/KBO_data-master/Data/kbo_link.json','r',encoding='utf-8') as kbo_link:
@@ -192,3 +282,38 @@ def highlight(request):
 
 
         return render(request, 'record/highlight.html', {'kbo_link':kbo_link, 'kbo_title': kbo_title, 'kbo_comments':kbo_comments, 'kbo_bonki':kbo_bonki} )
+=======
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        driver = webdriver.Chrome('./chromedriver.exe', options=chrome_options)
+        driver.get("https://www.youtube.com/")
+        time.sleep(1)
+
+        driver.find_element_by_xpath('//*[@id="search"]')
+        driver.find_element_by_xpath('//*[@id="search"]').send_keys('KBO 레전드')
+        driver.find_element_by_xpath('//*[@id="search"]').send_keys(Keys.ENTER)
+        time.sleep(1)
+
+        url = driver.current_url
+        # url = "https://www.youtube.com/results?search_query=KBO+%EB%A0%88%EC%A0%84%EB%93%9C"
+        # print(url)
+        response = urllib.request.urlopen(url)
+        soup = BeautifulSoup(response, 'lxml')
+        # print(response)
+
+        results = soup.select('h3 > a')
+        # print(type(results))
+        # result = results[0:5]
+        # print(results)
+        kbo_link=[]
+        kbo_title=[]
+        for video in results:
+            # print(video)
+            link = video.attrs['href'].replace('/watch?v=','/embed/')
+            title = video.attrs['title']
+            # print(link, title)
+            kbo_link.append(link)
+            kbo_title.append(title)
+        
+        return render(request, 'record/highlight.html', {'kbo_link':kbo_link, 'kbo_title': kbo_title})
+>>>>>>> 379a4ce6b9608b71031ff455796eee10977f8865

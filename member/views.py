@@ -40,6 +40,17 @@ def join(request):
         return HttpResponse(json.dumps(context), content_type='application/json')
 
 @csrf_exempt
+def idCheck(request):
+    if request.method == "POST":
+        id = request.POST['id']
+
+        Member.objects.get(mem_id = id)
+
+        context = {'check_status': 1}
+
+        return HttpResponse(json.dumps(context), content_type='application/json')
+
+@csrf_exempt
 def login(request):
     if request.method == "GET":
         return render(request, 'member/login.html')
