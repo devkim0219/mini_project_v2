@@ -25,6 +25,7 @@ def recordList(request):
     if request.method == "GET":
         # json 파일 내용 DB 에 insert
         # with open ("C:/Users/admin/Documents/mini_project_v2/data/KBO_data-master/Data/KBO_2019_season.json", 'r', encoding='utf-8') as json_file:
+        # with open ("D:/MyDev/mini_project_v2/data/KBO_data-master/Data/KBO_2016_season.json",'r',encoding='utf-8') as json_file:
         #     dataList = json.load(json_file)
 
         # for data in dataList: 
@@ -64,6 +65,7 @@ def pitcherList(request):
     if request.method == "GET":
         # json 파일 내용 db에 insert
         # with open ("C:/Users/admin/Documents/mini_project_v2/data/KBO_data-master/Data/pitcher.json",'r',encoding='utf-8') as json_file:
+        # with open ("D:/MyDev/mini_project_v2/data/KBO_data-master/Data/pitcher.json",'r',encoding='utf-8') as json_file:
         #     datalist = json.load(json_file)
     
         # for data in datalist:
@@ -112,6 +114,7 @@ def hitterList(request):
     if request.method == "GET":
         # json 파일 내용 db에 insert
         # with open ("C:/Users/admin/Documents/mini_project_v2/data/KBO_data-master/Data/hitter.json",'r',encoding='utf-8') as json_file:
+        # with open ("D:/MyDev/mini_project_v2/data/KBO_data-master/Data/hitter.json",'r',encoding='utf-8') as json_file:
         #     datalist = json.load(json_file)
 
         # for data in datalist:
@@ -139,7 +142,7 @@ def hitterList(request):
         searchkeyword = request.GET.get('text','')
         if searchtype == 'h_team':
             hitterList = Hitter.objects.filter(h_team__icontains=searchkeyword).order_by('h_team', '-h_avg')
-            # print(hitterList, "@@@@@@@@@@@@")
+
         elif searchtype == 'h_name':
             hitterList = Hitter.objects.filter(h_name__icontains=searchkeyword).order_by('h_team', '-h_avg')
 
@@ -160,7 +163,27 @@ def hitterList(request):
 def teamyear(request):
     if request.method =='GET':
         # json 파일 내용 db에 insert
-       
+        # with open ("C:/Users/admin/Documents/mini_project_v2/data/KBO_data-master/Data/rankteam.json",'r',encoding='utf-8') as json_file:
+        # with open ("D:/MyDev/mini_project_v2/data/KBO_data-master/Data/rankteam.json",'r',encoding='utf-8') as json_file:
+        #     datalist = json.load(json_file)
+
+        # for data in datalist:
+        #     t_no   = data['순위']
+        #     t_name = data['팀명']
+        #     t_game = data['경기']
+        #     t_win  = data['승']
+        #     t_lose = data['패']
+        #     t_draw = data['무']
+        #     t_per  = data['승률']
+        #     t_chai = data['게임차']
+        #     t_10   = data['최근10경기']
+        #     t_cont = data['연속']
+        #     t_home = data['홈']
+        #     t_away = data['방문']
+        #     t_year = data['연도']
+            
+        #     teamyear = Team(t_no=t_no,t_name=t_name,t_game=t_game,t_win=t_win,t_lose=t_lose,t_draw=t_draw,t_per=t_per,t_chai=t_chai,t_10=t_10,t_cont=t_cont,t_home=t_home,t_away=t_away,t_year=t_year )
+        #     teamyear.save()
 
         search_year = request.GET.get('search_year','2019')
 
@@ -173,30 +196,10 @@ def teamyear(request):
 
         return render(request, 'record/teamyear.html',{'teamList':teamList, 't_year':search_year})
 
-    # if request.method == "POST":
-    #     with open ("C:/Users/admin/Documents/mini_project_v2/data/KBO_data-master/Data/rankteam.json",'r',encoding='utf-8') as json_file:
-    #         datalist = json.load(json_file)
-
-    #     for data in datalist:
-    
-
-    #         t_chai = data['게임차']
-    #         t_10   = data['최근10경기']
-    #         t_cont = data['연속']
-    #         t_home = data['홈']
-    #         t_away = data['방문']
-    #         t_year = data['연도']
-            
-    #         teamyear = Team(t_no=t_no,t_name=t_name,t_game=t_game,t_win=t_win,t_lose=t_lose,t_draw=t_draw,t_per=t_per,t_chai=t_chai,t_10=t_10,t_cont=t_cont,t_home=t_home,t_away=t_away,t_year=t_year )
-    #         teamyear.save()
-
-        # return 0    
-            
-
-
 def graph(request):
     with open('./data/KBO_data-master/Data/rankteam.json','r',encoding='utf-8') as json_file:
         datalist = json.load(json_file)
+    
     doosan_rank =[]
     lotte_rank =[]
     hanhwa_rank =[]
@@ -207,7 +210,6 @@ def graph(request):
     kiwoom_rank =[]
     kia_rank =[]
     twins_rank =[]
-
 
     for i in datalist:
         if i['팀명']=='두산':
@@ -262,7 +264,6 @@ def graph(request):
     
     return render(request, 'record/graph.html',{"graph1":'data:image/png;base64,{}'.format(graph_url)})
 
-
 def highlight(request):
     if request.method =='GET':
         chrome_options = Options()
@@ -270,7 +271,6 @@ def highlight(request):
         driver = webdriver.Chrome('./chromedriver.exe', options=chrome_options)
         driver.get("https://www.youtube.com/")
         time.sleep(1)
-
 
         driver.find_element_by_xpath('//*[@id="search"]')
         driver.find_element_by_xpath('//*[@id="search"]').send_keys('KBO 레전드')
@@ -298,6 +298,4 @@ def highlight(request):
             kbo_link.append(link)
             kbo_title.append(title)
         
-
-
         return render(request, 'record/highlight.html', {'kbo_link':kbo_link, 'kbo_title': kbo_title})
