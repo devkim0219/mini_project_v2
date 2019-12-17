@@ -10,7 +10,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import urllib.request, time
-
+import json
 
 # Create your views here.
 def recordList(request):
@@ -181,39 +181,14 @@ def teamyear(request):
 
 def highlight(request):
     if request.method =='GET':
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        driver = webdriver.Chrome('./chromedriver.exe', options=chrome_options)
-        driver.get("https://www.youtube.com/")
-        time.sleep(1)
+        with open('./data/KBO_data-master/Data/kbo_title.json','r',encoding='utf-8') as kbo_title:
+            kbo_title = json.load(kbo_title)
+        with open('./data/KBO_data-master/Data/kbo_link.json','r',encoding='utf-8') as kbo_link:
+            kbo_link = json.load(kbo_link)
+        with open('./data/KBO_data-master/Data/kbo_comments.json','r',encoding='utf-8') as kbo_comments:
+            kbo_comments = json.load(kbo_comments)
+        with open('./data/KBO_data-master/Data/kbo_bonki.json','r',encoding='utf-8') as kbo_bonki:
+            kbo_bonki = json.load(kbo_bonki)
 
 
-        driver.find_element_by_xpath('//*[@id="search"]')
-        driver.find_element_by_xpath('//*[@id="search"]').send_keys('KBO 레전드')
-        driver.find_element_by_xpath('//*[@id="search"]').send_keys(Keys.ENTER)
-        time.sleep(1)
-
-        url = driver.current_url
-        # url = "https://www.youtube.com/results?search_query=KBO+%EB%A0%88%EC%A0%84%EB%93%9C"
-        # print(url)
-        response = urllib.request.urlopen(url)
-        soup = BeautifulSoup(response, 'lxml')
-        # print(response)
-
-        results = soup.select('h3 > a')
-        # print(type(results))
-        # result = results[0:5]
-        # print(results)
-        kbo_link=[]
-        kbo_title=[]
-        for video in results:
-            # print(video)
-            link = video.attrs['href'].replace('/watch?v=','/embed/')
-            title = video.attrs['title']
-            # print(link, title)
-            kbo_link.append(link)
-            kbo_title.append(title)
-        
-
-
-        return render(request, 'record/highlight.html', {'kbo_link':kbo_link, 'kbo_title': kbo_title})
+        return render(request, 'record/highlight.html', {'kbo_link':kbo_link, 'kbo_title': kbo_title, 'kbo_comments':kbo_comments, 'kbo_bonki':kbo_bonki} )
