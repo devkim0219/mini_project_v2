@@ -61,7 +61,7 @@ def recordList(request):
 
         return render(request, 'record/recordList.html', {'recordList': recordList, 'posts': posts, 'searchYear': searchYear, 'searchMonth': searchMonth})
 
-def pitcherList(request):
+def pitcherList(request): 
     if request.method == "GET":
         # json 파일 내용 db에 insert
         # with open ("C:/Users/admin/Documents/mini_project_v2/data/KBO_data-master/Data/pitcher.json",'r',encoding='utf-8') as json_file:
@@ -205,7 +205,7 @@ def graph(request):
     hanhwa_rank =[]
     samsung_rank =[]
     kt_rank =[]
-    sk_rank =[]
+    sk_rank =[] 
     nc_rank =[]
     kiwoom_rank =[]
     kia_rank =[]
