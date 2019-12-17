@@ -44,7 +44,7 @@ def idCheck(request):
     if request.method == "POST":
         id = request.POST['id']
 
-        member = Member.objects.get(mem_id = id)
+        Member.objects.get(mem_id = id)
 
         context = {'check_status': 1}
 
