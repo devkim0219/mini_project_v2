@@ -58,15 +58,15 @@
                 success: function(request) {
                     // alert('ajax 통신성공');
                     // alert(request.login_status);
-                    alert(request.username + "님 환영합니다^^")
+                    alert(request.username + "님 환영합니다^^");
                     window.location.replace("{% url 'index' %}");
                 },
                 error: function(request, error) {
                     // alert(error)
                     // alert(request)
                     alert('로그인 정보가 없습니다.\n다시 시도해 주세요.');
-                    $("#user_id").val("")
-                    $("#user_pw").val("")
+                    $("#user_id").val("");
+                    $("#user_pw").val("");
                     $("#user_id").focus();
                 }
             })
